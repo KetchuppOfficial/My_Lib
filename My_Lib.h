@@ -4,121 +4,59 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
+#include <limits.h>
 
-int My_Assert         (bool condition, const char *const file, const int line,
-                       const char *const fun_name, const char *const var_name, const int err_name);
-int  Open_Log_File    (void);
-void Close_Log_File   (void);
-FILE *Open_File       (const char *const file_name, const char *const mode);
-int  Close_File       (FILE *file_ptr, const char *file_name);
-long Define_File_Size (FILE * file_ptr);
-char *Make_Buffer     (FILE *file_ptr, const long n_symbs);
+enum ERROR_TYPES
+{
+    UNDEF_BEH     = 0,
+    FUNC_ERROR    = 1,
+    NE_MAIN_ARGS  = 2,
 
-#define OPEN_LOG_FILE               \
-do                                  \
-{                                   \
-    if (Open_Log_File () == ERROR)  \
-        return EXIT_FAILURE;        \
-}                                   \
-while (0)
+    LOG_NOT_OPEN  = 3,
+    OPEN_ERR      = 4,
+    CLOSE_ERR     = 5,
+    EMPTY_FILE    = 6,
+
+    POS_VAL       = 7,
+    NEG_VAL       = 8,
+    N_POS_VAL     = 9,
+    N_NEG_VAL     = 10,
+    UNEXP_ZERO    = 11,
+    UNEXP_VAL     = 12,
+    UNEXP_SYMB    = 13,
+
+    ZERO_DIV      = 14,
+    ZERO_POW_ZERO = 15,
+
+    NULL_PTR      = 16,
+    NOT_NULL_PTR  = 17,
+
+    NE_MEM        = 18,
+};
+
+enum ERRORS
+{
+    NO_ERRORS = INT_MAX,
+    ERROR     = INT_MIN,
+};
 
 #define MY_ASSERT(condition, var, err_num, error)                               \
 do                                                                              \
 {                                                                               \
     if (!(condition))                                                           \
     {                                                                           \
-        My_Assert (false, __FILE__, __LINE__, __FUNCTION__, var, err_num);      \
+        _My_Assert (false, __FILE__, __LINE__, __FUNCTION__, var, err_num);     \
         return error;                                                           \
     }                                                                           \
 }                                                                               \
 while (0)
 
-enum ERROR_TYPES
-{
-    UNDEF_BEH = 0,
-    FUNC_ERROR,
-    NOT_ENOUGH_ARGS,
+int _My_Assert        (bool condition, const char *const file, const int line,
+                       const char *const fun_name, const char *const var_name, const int err_name);
+int  Open_Log_File    (const char *const log_name);
+FILE *Open_File       (const char *const file_name, const char *const mode);
+long Define_File_Size (FILE *file_ptr);
+int  Close_File       (FILE *file_ptr, const char *file_name);
 
-    LOG_NOT_OPEN,
-    OPEN_ERR,
-    CLOSE_ERR,
-    EMP_FILE,
-    INCORR_FILE,
-    FILE_WRT,
-    FSEEK_ERR,
-    FTELL_ERR,
-    STAT_ERR,
-
-    POS_VAL,
-    UNEXP_VAL,
-    UNEXP_SYMB,
-    INT_EXPECTED,
-    NULL_PTR,
-    NOT_NULL_PTR,
-    NE_MEM,
-    NULL_POW_NULL,
-    DIV_BY_NULL,
-
-    INCORR_LBL,
-    EMP_LBL,
-    EQUAL_LBLS,
-    TF_LBLS,
-    UNKNOWN_JMP,
-    POS_LBL,
-    END_LBL,
-
-    UNDEF_CMD,
-    INCORR_ARG,
-    WRONG_DECIMAL,
-    TF_ARGS,
-    TM_ARGS,
-    LINE_ERR,
-    SCND_BRACE,
-    TWO_BRACK,
-
-    RADIUS,
-
-    CTOR_ERR,
-    PUSH_ERR,
-    POP_ERR,
-    DTOR_ERR,
-    UNINIT_STACK,
-    ZERO_POP,
-    MULT_CTOR,
-    BAD_RESIZE,
-    RSZ_ERR,
-    L_S_CANARY_CG,
-    R_S_CANARY_CG,
-    L_D_CANARY_CG,
-    R_D_CANARY_CG,
-    HASH_CHANGE,
-
-    ZERO_DIV,
-
-    END_I_ERR,
-    BEG_I_ERR,
-    LIST_UF,
-    LIST_OF,
-    INV_POS,
-    INV_DEL,
-    FREE_INSERT,
-    FREE_DEL,
-    BEFORE_ZERO,
-    UNINIT_LIST,
-    NO_NUM,
-    PREV_HEAD,
-    NEXT_TAIL,
-    LIST_DAM,
-    FREE_DAM,
-
-    HAS_L_SON,
-    HAS_R_SON
-};
-
-enum ERRORS
-{
-    NO_ERRORS = -101,
-    ERROR,
-};
-
-#endif // LOG_FILE_H_INCLUDED
+#endif
