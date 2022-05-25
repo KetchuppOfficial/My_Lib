@@ -2,7 +2,7 @@
 
 //RELATED TO LOG FILE
 //***************************************************************************************
-FILE *_LOG_FILE = NULL;
+FILE *LOG_FILE_ = NULL;
 
 struct Error
 {
@@ -42,7 +42,7 @@ static const struct Error ERRORS_LIST[] =
 
 static void Close_Log_File (void)
 {
-    if (fclose (_LOG_FILE) == 0)
+    if (fclose (LOG_FILE_) == 0)
         printf ("Log file is closed successfully\n");
     else
         printf ("Log file is NOT closed successfully\n");
@@ -55,17 +55,17 @@ int Open_Log_File (const char *const log_name)
     memcpy (name, log_name, name_len);
     strcat (name, ".log");
     
-    _LOG_FILE = fopen (name, "wb");
+    LOG_FILE_ = fopen (name, "wb");
 
-    if (!_LOG_FILE)
+    if (!LOG_FILE_)
     {
-        _LOG_FILE = stderr;
-        MY_ASSERT (false, "FILE *_LOG_FILE", LOG_NOT_OPEN, ERROR);
+        LOG_FILE_ = stderr;
+        MY_ASSERT (false, "FILE *LOG_FILE_", LOG_NOT_OPEN, ERROR);
     }
 
-    fprintf (_LOG_FILE, "**********************************\n");
-    fprintf (_LOG_FILE, "*        THIS IS LOG_FILE        *\n");
-    fprintf (_LOG_FILE, "**********************************\n\n");
+    fprintf (LOG_FILE_, "**********************************\n");
+    fprintf (LOG_FILE_, "*        THIS IS LOG_FILE        *\n");
+    fprintf (LOG_FILE_, "**********************************\n\n");
 
     atexit (Close_Log_File);
 
@@ -77,16 +77,16 @@ int Open_Log_File (const char *const log_name)
 int My_Assert (bool condition, const char *const file, const int line,
                const char *const fun_name, const char *const var_name, const int err_name)
 {
-    if (!_LOG_FILE || !fun_name || !var_name || err_name < 0 || line <= 0)
+    if (!LOG_FILE_ || !fun_name || !var_name || err_name < 0 || line <= 0)
         return ERROR;
 
     if (!condition)
     {
-        fprintf (_LOG_FILE, "File: %s\n",                                   file);
-        fprintf (_LOG_FILE, "Line: %d\n",                                   line);
-        fprintf (_LOG_FILE, "Function with error: %s\n",                    fun_name);
-        fprintf (_LOG_FILE, "Variable or function that caused error: %s\n", var_name);
-        fprintf (_LOG_FILE, "Error description: %s\n\n",                    ERRORS_LIST[err_name].description);
+        fprintf (LOG_FILE_, "File: %s\n",                                   file);
+        fprintf (LOG_FILE_, "Line: %d\n",                                   line);
+        fprintf (LOG_FILE_, "Function with error: %s\n",                    fun_name);
+        fprintf (LOG_FILE_, "Variable or function that caused error: %s\n", var_name);
+        fprintf (LOG_FILE_, "Error description: %s\n\n",                    ERRORS_LIST[err_name].description);
 
         return 1;
     }
