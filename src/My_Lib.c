@@ -74,8 +74,8 @@ int Open_Log_File (const char *const log_name)
     return NO_ERRORS;
 }
 
-int My_Assert (bool condition, const char *const file, const int line,
-               const char *const fun_name, const char *const var_name, const int err_name)
+int My_Assert_ (bool condition, const char *const file, const int line,
+                const char *const fun_name, const char *const var_name, const int err_name)
 {
     if (!LOG_FILE_ || !fun_name || !var_name || err_name < 0 || line <= 0)
         return ERROR;
@@ -137,7 +137,7 @@ long Define_File_Size (FILE *file_ptr)
     return n_symbs;
 }
 
-static char *_Make_Buffer (FILE *file_ptr, const long n_symbs)
+static char *Make_Buffer_ (FILE *file_ptr, const long n_symbs)
 {
     char *buffer = (char *)calloc (n_symbs + 1L, sizeof (char));
     MY_ASSERT (buffer, "char *buffer", NE_MEM, NULL);
@@ -160,7 +160,7 @@ char *Make_File_Buffer (const char *const file_name, long *const n_symbs)
     *n_symbs = Define_File_Size (file);
     MY_ASSERT (*n_symbs > 0, "Define_File_Size ()", FUNC_ERROR, NULL);
 
-    char *buffer = _Make_Buffer (file, *n_symbs);
+    char *buffer = Make_Buffer_ (file, *n_symbs);
     MY_ASSERT (buffer, "_Make_Buffer ()", FUNC_ERROR, NULL);
 
     int closure_status = Close_File (file, file_name);

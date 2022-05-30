@@ -46,13 +46,13 @@ do                                                                              
 {                                                                               \
     if (!(condition))                                                           \
     {                                                                           \
-        _My_Assert (false, __FILE__, __LINE__, __FUNCTION__, var, err_num);     \
+        My_Assert_ (false, __FILE__, __LINE__, __FUNCTION__, var, err_num);     \
         return error;                                                           \
     }                                                                           \
 }                                                                               \
 while (0)
 
-int _My_Assert         (bool condition, const char *const file, const int line,
+int My_Assert_         (bool condition, const char *const file, const int line,
                         const char *const fun_name, const char *const var_name, const int err_name);
 int  Open_Log_File     (const char *const log_name);
 FILE *Open_File        (const char *const file_name, const char *const mode);
