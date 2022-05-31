@@ -16,7 +16,6 @@ DEPS = $(SUBS:.c=.d)
 .PHONY: all
 
 all: $(DEPS) $(OBJ)
-	@echo "Building library..."
 	@ar r My_Lib.a $(OBJ) 
 
 $(BUILDDIR)%.o: $(SRCDIR)%.c
